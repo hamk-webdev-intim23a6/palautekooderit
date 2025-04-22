@@ -1,0 +1,19 @@
+[Unit]
+Description= Shadow Wizard Money Gang
+After=network-online.target
+
+[Service]
+Type=simple
+Restart=on-failure
+TimeoutSec=5min
+IgnoreSIGPIPE=no
+KillMode=process
+KillSignal=SIGINT
+GuessMainPID=no
+RemainAfterExit=yes
+WorkingDirectory=/home/azureuser/palautekooderit/palautekooderit
+ExecStart=/usr/bin/python3 /home/azureuser/palautekooderit/palautekooderit/manage.py runserver 0.0.0.0:80
+
+[Install]
+WantedBy=multi-user.target
+Wants=network-online.target
