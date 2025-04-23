@@ -1,1 +1,3 @@
 palautekooderit/palautekooderit/settings.py
+*.pyc
+palautekooderit/db.sqlite3
