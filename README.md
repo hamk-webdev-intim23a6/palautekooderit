@@ -18,6 +18,10 @@ When we update code here we need to refresh apache sometimes. To do that you can
 > sudo systemctl restart apache2.service
 To use the production environment navigate to [ankkapeli.fi](https://ankkapeli.fi)
 
+To load the newest main branch from git use:
+> cd /var/www/palautekooderit; sudo git checkout main; sudo git pull; cd
+- sudo is needed because this folder technically belongs to root.
+
 ### Dev
 Dev is in /home/azureuser/palautekooderit.
 Dev is running with `manage.py runserver` on port 8080.
@@ -26,6 +30,10 @@ This is mean to hold testing code. Ideally we would develope locally and then on
 There shouldn't be a need to restart the server, but because computers are computers there surely will be. To do that you can use:
 > sudo systemctl restart django.service
 To use the dev environment navigate to [ankkapeli.fi:8080](http://ankkapeli.fi:8080) WITH HTTP, no https here.
+
+To load the newest main branch from git use:
+> cd ~/palautekooderit; git checkout main; git pull; cd
+- you can change the branch to something else than main too.
 
 ## Repo notes
 We have some special files in the repo.  
