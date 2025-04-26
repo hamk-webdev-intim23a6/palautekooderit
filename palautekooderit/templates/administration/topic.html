@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Luo uusi palaute aihe</h2>
+<form method="post" novalidate>
+  {% csrf_token %}
+  <table>
+  {{ form.as_p }}
+  </table>
+  <button type="submit">Luo uusi palaute aihe</button>
+</form>
+<h2>Olemassa olevat aiheet</h2>
+<ul>
+  {% for topic in topics %}
+      <li>{{ topic.name }}</li>
+  {% endfor %}
+  </ul>
+{% endblock %}
