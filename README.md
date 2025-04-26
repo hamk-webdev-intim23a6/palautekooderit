@@ -40,7 +40,7 @@ When we update code here we need to refresh apache sometimes. To do that you can
 To use the production environment navigate to [ankkapeli.fi](https://ankkapeli.fi)
 
 To load the newest main branch from git use:
-> cd /var/www/palautekooderit; sudo git checkout main; sudo git pull; cd
+> cd /var/www/palautekooderit; sudo git checkout main; sudo git pull; cd -
 - sudo is needed because this folder technically belongs to root.
 
 ### Dev
@@ -53,7 +53,7 @@ There shouldn't be a need to restart the server, but because computers are compu
 To use the dev environment navigate to [ankkapeli.fi:8080](http://ankkapeli.fi:8080) WITH HTTP, no https here.
 
 To load the newest main branch from git use:
-> cd ~/palautekooderit; git checkout main; git pull; cd
+> cd ~/palautekooderit; git checkout main; git pull; cd -
 - you can change the branch to something else than main too.
 
 ## Repo notes
