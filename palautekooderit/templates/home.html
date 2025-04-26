@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Ankkapeli</h1>
+{% if user.is_authenticated %}
+    <p>User logged in: {{ user }}</p>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+    <button type="submit">Log out</button>
+    </form>
+{% else %}
+    <p>You must login first.</p>
+    <p><a href="{% url 'login' %}">Login</a></p>
+    <p><a href="{% url 'signup' %}">Create a new Account</a></p>
+{% endif %}
+{% endblock %}
