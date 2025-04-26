@@ -1,10 +1,11 @@
 # Palautekooderit
 Shadow wizard money gang, we love casting spells.
 
-Developement is primarily to be done locally, some testing and production on the server.
-
 ## Local Developement
 
+Developement is primarily to be done locally, some testing and production on the server.
+
+### Setup
 To setup local developement environment
 1. Install django and django-extensions
 windows:
@@ -18,9 +19,12 @@ debian
     - If you are one of us, you can grab the key, or the entire file, from the server.
 4. Profit???
 
+### Using
 to run the local server use
 > python manage.py runserver 0:80
 in palautekooderit folder
+
+It is a good idea to set DEBUG to True in settings.py for local developement. Careful not to commit this though 😉
 
 ## Navigating the server
 
