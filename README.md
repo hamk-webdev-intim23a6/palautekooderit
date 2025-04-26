@@ -1,6 +1,27 @@
 # Palautekooderit
 Shadow wizard money gang, we love casting spells.
 
+Developement is primarily to be done locally, some testing and production on the server.
+
+## Local Developement
+
+To setup local developement environment
+1. Install django and django-extensions
+windows:
+> pip install django django-extensions
+windows, with multiple pythons installed
+> python -m pip install django django-extensions
+debian
+> sudo apt install python3-django python3-django-extensions
+2. Clone the repo
+3. change palautekooderit/palautekooderit/secretKey_template.py to palautekooderit/palautekooderit/secretKey.py and fill it.
+    - If you are one of us, you can grab the key, or the entire file, from the server.
+4. Profit???
+
+to run the local server use
+> python manage.py runserver 0:80
+in palautekooderit folder
+
 ## Navigating the server
 
 The server is running two instances of the app.
