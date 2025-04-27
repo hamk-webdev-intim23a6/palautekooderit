@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Luo uusi palaute aihe</h2>
-<form method="post" novalidate>
-  {% csrf_token %}
-  <table>
-  {{ form.as_p }}
-  </table>
-  <button type="submit">Luo uusi palaute aihe</button>
+<form method="post">
+	{% csrf_token %}
+	<div>
+	  <label for="{{ form.name.id_for_label }}">Aihe:</label>
+	  {{ form.name }}
+	</div>
+	<button type="submit">Luo uusi palaute aihe</button>
 </form>
 <h2>Olemassa olevat aiheet</h2>
 <ul>
