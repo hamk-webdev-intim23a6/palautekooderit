@@ -2,57 +2,63 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Feedback, Topic
-from .forms import TopicForm
-from .forms import Topic
+from .forms import FeedbackForm, TopicForm
+from django.contrib import messages
 
-# Allows selection of feedback item
+# Home page view - displays the feedback form
 def home(request):
-    topic_form = TopicForm()
-    return render(request, 'home.html', {'topic_form': topic_form})
+    form = FeedbackForm()
+    return render(request, 'home.html', {'form': form})
 
-#Allows giving feedback
+# Handles feedback submission
 @login_required
 def submit_feedback(request):
     if request.method == 'POST':
-        topic_form = TopicForm(request.POST)
-        if topic_form.is_valid():
-            topic_instance = topic_form.cleaned_data['name']
-            try:
-                rating = int(request.POST.get('rating'))
-                positive = request.POST.get('positive', '')
-                negative = request.POST.get('negative', '')
-                ideas = request.POST.get('ideas', '')
+        form = FeedbackForm(request.POST)
+        
+        if form.is_valid():
+            topic_instance = form.cleaned_data['topic']
+            rating = form.cleaned_data['rating']
+            positive = form.cleaned_data['positive']
+            negative = form.cleaned_data['negative']
+            ideas = form.cleaned_data['ideas']
 
-                feedback = Feedback(
-                    topic=topic_instance,
-                    user=request.user,
-                    rating=rating,
-                    positive=positive,
-                    negative=negative,
-                    ideas=ideas
-                )
-                feedback.save()
+            Feedback.objects.create(
+                topic=topic_instance,
+                user=request.user,
+                rating=rating,
+                positive=positive,
+                negative=negative,
+                ideas=ideas
+            )
 
-                messages.success(request, 'Feedback sent.')
-                return redirect('home')
-            except ValueError:
-                error_message = "Please enter a valid rating between 1 and 5."
-                return render(request, 'home.html', {'topic_form': topic_form, 'error': error_message})
+            messages.success(request, 'Kiitos palautteesta!')
+
+            return redirect('home')
         else:
-            return render(request, 'home.html', {'topic_form': topic_form, 'form_errors': topic_form.errors})
+            messages.error(request, 'Tarkista lomakkeen virheet ja yritä uudelleen.')
+            return render(request, 'home.html', {'form': form})
     else:
         return redirect('home')
 
-#Allows creation of feedback items    
+# Allows creation of feedback items (Topics)
 def topic(request):
-    topics = Topic.objects.all()
+    topics = Topic.objects.all().order_by('name')
     if request.method == 'POST':
-        form = TopicForm(request.POST)
-        if form.is_valid():
-            form.save()
+        topic_creation_form = TopicForm(request.POST)
+        if topic_creation_form.is_valid():
+            new_topic = topic_creation_form.save()
+            messages.success(request, f"Aihe '{new_topic.name}' luotu onnistuneesti.")
+            return redirect('topic')
+        else:
+            messages.error(request, 'Aiheen luominen epäonnistui. Tarkista virheet.')
     else:
-        form = TopicForm()
-    return render(request, 'administration/topic.html', {'form': form, 'topics': topics})
+        topic_creation_form = TopicForm()
+
+    return render(request, 'administration/topic.html', {
+        'form': topic_creation_form,
+        'topics': topics
+    })
 
 #Allows viewing of analytics
 def analytics(request):
