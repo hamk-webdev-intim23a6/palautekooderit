@@ -4,9 +4,14 @@
 <h2>Kirjaudu sisään</h2>
 <form method="post">
     {% csrf_token %}
-    <table>
-    {{ form.as_table }}
-</table>
+    <div>
+      <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+      {{ form.username }}
+    </div>
+    <div>
+      <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+      {{ form.password }}
+    </div>
     <button type="submit">Kirjaudu</button>
 </form>
 {% endblock %}

@@ -3,9 +3,18 @@
 <h2>Rekisteröidy</h2>
 <form method="post" novalidate>
   {% csrf_token %}
-  <table>
-  {{ form.as_table }}
-  </table>
+  <div>
+    <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+    {{ form.username }}
+  </div>
+  <div>
+    <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+    {{ form.password }}
+  </div>
+  <div>
+    <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+    {{ form.password2 }}
+  </div>
   <button type="submit">Luo käyttäjä</button>
 </form>
 {% endblock %}
