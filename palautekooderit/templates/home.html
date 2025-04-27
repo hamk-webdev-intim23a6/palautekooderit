@@ -2,11 +2,56 @@
 {% block content %}
 <h1>Ankkapeli</h1>
 {% if user.is_authenticated %}
-    <p>User logged in: {{ user }}</p>
-    <form method="post" action="{% url 'logout' %}">
+    {% if error %}
+      <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    {% if form_errors %}
+      <div style="color: red;">
+        <strong>Form Errors:</strong>
+        <ul>
+          {% for field, errors in form_errors.items %}
+            {% for error in errors %}
+              <li>{{ field|capfirst }}: {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    <h2>Tervetuloa, {{ user }}!</h2>
+    <h3>Anna palautetta</h3>
+    <form method="post" action="{% url 'submit_feedback' %}">
         {% csrf_token %}
-    <button type="submit">Log out</button>
-    </form>
+        <div>
+          <label for="{{ topic_form.name.id_for_label }}">Topic:</label>
+          {{ topic_form.name }}
+          <small>Select the topic you are giving feedback on.</small>
+        </div>
+        <div>
+          <label for="rating">Rating (1-5):</label>
+          <input type="number" id="rating" name="rating" min="1" max="5" value="5" required>
+        </div>
+        <div>
+          <label for="positive">What was positive? (Optional):</label>
+          <textarea id="positive" name="positive" rows="3"></textarea>
+        </div>
+        <div>
+          <label for="negative">What could be improved? (Optional):</label>
+          <textarea id="negative" name="negative" rows="3"></textarea>
+        </div>
+        <div>
+          <label for="ideas">Any other ideas? (Optional):</label>
+          <textarea id="ideas" name="ideas" rows="3"></textarea>
+        </div>
+        <button type="submit">Submit Feedback</button>
+      </form>
+  
+      <div style="margin-top: 20px;">
+        <a href="{% url 'home' %}"><button type="button">Give New Feedback</button></a>
+        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+          {% csrf_token %}
+          <button type="submit">Log Out</button>
+        </form>
+      </div>
 {% else %}
     <p>You must login first.</p>
     <p><a href="{% url 'login' %}">Login</a></p>
