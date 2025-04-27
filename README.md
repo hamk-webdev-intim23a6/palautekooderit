@@ -1,4 +1,4 @@
-# palautekooderit
+# Palautekooderit
 Shadow wizard money gang, we love casting spells.
 
 ## Local Developement
@@ -41,10 +41,11 @@ This one is running trough apache, on ports 80 and 443.
 Since this is intended for production, it is meant to only hold production code. Ideally testing is done with the dev instance.
 When we update code here we need to refresh apache sometimes. To do that you can use:
 > sudo systemctl restart apache2.service
+
 To use the production environment navigate to [ankkapeli.fi](https://ankkapeli.fi)
 
 To load the newest main branch from git use:
-> cd /var/www/palautekooderit; sudo git checkout main; sudo git pull; cd -
+> cd /var/www/palautekooderit/palautekooderit; sudo git checkout main; sudo git pull; sudo python manage.py migrate; sudo python manage.py collectstatic; sudo chown www-data:www-data /var/www -R; cd -
 - sudo is needed because this folder technically belongs to root.
 
 ### Dev
@@ -54,6 +55,7 @@ Remeber that there is no real security here. So do not use passwords you would u
 This is mean to hold testing code. Ideally we would develope locally and then only test here, since we only have one server to split between us. We could if we really wanted to spin up more dev instanses but the server is slow as is 😅
 There shouldn't be a need to restart the server, but because computers are computers there surely will be. To do that you can use:
 > sudo systemctl restart django.service
+
 To use the dev environment navigate to [ankkapeli.fi:8080](http://ankkapeli.fi:8080) WITH HTTP, no https here.
 
 To load the newest main branch from git use:
@@ -64,4 +66,6 @@ To load the newest main branch from git use:
 We have some special files in the repo.  
 `django.service` -> service file used to run the dev server.
 `wsgi.conf`-> configures wsgi for apache.
-These two files need to be, and are, in their respective configuration folders on the server. There is also a virtual host config for the apache server which is not included in the repo, as it is just stock + certbot modifications.
+These two files need to be, and are, in their respective configuration folders on the server.
+
+`000-default.conf` and `000-default-le-ssl.conf` are apache virtual host configs.
