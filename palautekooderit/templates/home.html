@@ -43,11 +43,6 @@
     {# The actual form submission #}
     <form method="post" action="{% url 'submit_feedback' %}">
       {% csrf_token %}
-      topic_instance = form.cleaned_data['topic']
-      rating = form.cleaned_data['rating']
-      positive = form.cleaned_data['positive']
-      negative = form.cleaned_data['negative']
-      ideas = form.cleaned_data['ideas']
       <div>
         <label for="{{ form.topic.id_for_label }}">{{ form.topic.label }}</label>
         {{ form.topic }}
