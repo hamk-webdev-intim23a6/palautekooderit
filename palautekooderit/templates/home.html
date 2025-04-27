@@ -43,7 +43,26 @@
     {# The actual form submission #}
     <form method="post" action="{% url 'submit_feedback' %}">
       {% csrf_token %}
-      {{ form.as_p }}
+      <div>
+        <label for="{{ form.topic.id_for_label }}">{{ form.topic.label }}</label>
+        {{ form.topic }}
+      </div>
+      <div>
+        <label for="{{ form.rating.id_for_label }}">{{ form.rating.label }}</label>
+        {{ form.rating }}
+      </div>
+      <div>
+        <label for="{{ form.positive.id_for_label }}">{{ form.positive.label }}</label>
+        {{ form.positive }}
+      </div>
+      <div>
+        <label for="{{ form.negative.id_for_label }}">{{ form.negative.label }}</label>
+        {{ form.negative }}
+      </div>
+      <div>
+        <label for="{{ form.ideas.id_for_label }}">{{ form.ideas.label }}</label>
+        {{ form.ideas }}
+      </div>
       <button type="submit" style="margin-right: 10px;">Lähetä palaute</button>
       <button
         type="button"

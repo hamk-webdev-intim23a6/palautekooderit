@@ -24,8 +24,11 @@
             <div style="color: red; margin-bottom: 10px; border: 1px solid red; padding: 8px; border-radius: 4px;">
                 {{ form.non_field_errors }}
             </div>
-        {% endif %}
-        {{ form.as_p }}
+        {% endif %}	
+        <div>
+          <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+          {{ form.name }}
+        </div>
         <button type="submit">Luo aihe</button>
     </form>
 </div>
