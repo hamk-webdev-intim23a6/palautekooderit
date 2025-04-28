@@ -28,4 +28,5 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('signup/', SignUpView.as_view(), name='signup'),
     path('feedback/', include('feedbacksystem.urls')),
+    path('analytics/', feedback_views.analytics, name='analytics')
 ]

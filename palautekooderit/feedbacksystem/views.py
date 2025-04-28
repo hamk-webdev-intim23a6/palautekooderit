@@ -1,9 +1,10 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Feedback, Topic
 from .forms import FeedbackForm, TopicForm
 from django.contrib import messages
+from django.db.models import Avg
+from django.contrib.auth.models import User
 
 # Home page view - displays the feedback form
 def home(request):
@@ -60,6 +61,45 @@ def topic(request):
         'topics': topics
     })
 
-#Allows viewing of analytics
 def analytics(request):
-    return HttpResponse("See analytics")
+    topics = Topic.objects.all()
+    user_list = User.objects.all()
+
+    # Get selected user from GET parameter
+    selected_user_id = request.GET.get('user')
+    selected_user = None
+
+    if selected_user_id:
+        try:
+            selected_user = User.objects.get(id=selected_user_id)
+            feedbacks = Feedback.objects.filter(user=selected_user)
+        except User.DoesNotExist:
+            feedbacks = Feedback.objects.all()
+    else:
+        feedbacks = Feedback.objects.all()
+
+    topic_data = []
+    for topic in topics:
+        topic_feedbacks = feedbacks.filter(topic=topic)
+
+        avg_rating = topic_feedbacks.aggregate(Avg('rating'))['rating__avg']
+        feedback_count = topic_feedbacks.count()
+
+        positive_comments = topic_feedbacks.values_list('user__username', 'positive')
+        negative_comments = topic_feedbacks.values_list('user__username', 'negative')
+        ideas_comments = topic_feedbacks.values_list('user__username', 'ideas')
+
+        topic_data.append({
+            'topic': topic,
+            'avg_rating': avg_rating,
+            'feedback_count': feedback_count,
+            'positive_comments': positive_comments,
+            'negative_comments': negative_comments,
+            'ideas_comments': ideas_comments,
+        })
+
+    return render(request, 'administration/analytics.html', {
+        'topic_data': topic_data,
+        'user_list': user_list,
+        'selected_user': selected_user,
+    })
