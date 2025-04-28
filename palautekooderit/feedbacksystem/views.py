@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Feedback, Topic
 from .forms import FeedbackForm, TopicForm
 from django.contrib import messages
+from django.db.models import Avg, Count
 
 # Home page view - displays the feedback form
 def home(request):
@@ -62,4 +63,30 @@ def topic(request):
 
 #Allows viewing of analytics
 def analytics(request):
-    return HttpResponse("See analytics")
+    topics = Topic.objects.all()
+    
+    topic_data = []
+    for topic in topics:
+        feedbacks = Feedback.objects.filter(topic=topic)
+        
+        # Get average rating and feedback count
+        avg_rating = feedbacks.aggregate(Avg('rating'))['rating__avg']
+        feedback_count = feedbacks.count()
+
+        # Gather comments by category (positive, negative, ideas)
+        positive_comments = [(feedback.user.username, feedback.positive) for feedback in feedbacks if feedback.positive]
+        negative_comments = [(feedback.user.username, feedback.negative) for feedback in feedbacks if feedback.negative]
+        ideas_comments = [(feedback.user.username, feedback.ideas) for feedback in feedbacks if feedback.ideas]
+        
+        topic_data.append({
+            'topic': topic,
+            'avg_rating': avg_rating,
+            'feedback_count': feedback_count,
+            'positive_comments': positive_comments,
+            'negative_comments': negative_comments,
+            'ideas_comments': ideas_comments,
+        })
+
+    return render(request, 'administration/analytics.html', {
+        'topic_data': topic_data
+    })
