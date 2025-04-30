@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.db.models import Avg
 from django.contrib.auth.models import User
 
+
 # Home page view - displays the feedback form
 def home(request):
     form = FeedbackForm()
@@ -103,3 +104,4 @@ def analytics(request):
         'user_list': user_list,
         'selected_user': selected_user,
     })
+    
