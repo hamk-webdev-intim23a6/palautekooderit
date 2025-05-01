@@ -5,11 +5,6 @@ from django.contrib.auth.views import LoginView
 from feedbacksystem.forms import CustomLoginForm
 from feedbacksystem.forms import CustomSignupForm
 
-#class SignUpView(generic.CreateView):
-#    form_class = UserCreationForm
-#    success_url = reverse_lazy('login')
-#    template_name = 'registration/signup.html'
-
 class CustomLoginView(LoginView):
     authentication_form = CustomLoginForm
     template_name = 'registration/login.html'
