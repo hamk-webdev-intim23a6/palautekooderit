@@ -12,28 +12,59 @@
   <!-- Oma tyylitiedosto -->
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggler = document.querySelector(".navbar-toggler");
+    const collapse = document.querySelector(".navbar-collapse");
+
+    let isOpen = false;
+
+    toggler.addEventListener("click", () => {
+      if (isOpen) {
+        collapse.classList.remove("show");
+        collapse.style.display = 'none';
+      } else {
+        collapse.style.display = 'block';
+        // Trigger animation next frame
+        requestAnimationFrame(() => {
+          collapse.classList.add("show");
+        });
+      }
+      isOpen = !isOpen;
+    });
+  });
+</script>
+
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+  <nav class="navbar navbar-expand-md py-3">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'home' %}">Ankkapelin palautejärjestelmä</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <!-- Logo ja otsikko keskelle -->
+      <div class="mx-auto d-flex align-items-center">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+          <img class="navbar-logo me-2" src="{% static 'images/logo.png' %}" alt="Logo" style="height: 40px;">
+          <span class="navbar-title-text">Ankkapelin palautejärjestelmä</span>
+        </a>
+      </div>
+
+      <!-- Hampurilaispainike oikealle -->
+      <button class="navbar-toggler" type="button">
         <span class="navbar-toggler-icon"></span>
       </button>
 
+      <!-- Navigaatiolinkit -->
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav ms-auto mt-3 mt-md-0">
           {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="btn btn-warning analytics-btn nav-item px-2 mx-2 fw-bold" href="{% url 'analytics' %}">Analytiikka</a>
+            <li class="nav-item text-center">
+              <a class="nav-link analytics-btn fw-bold" href="{% url 'analytics' %}">Analytiikka</a>
             </li>
           {% endif %}
         </ul>
       </div>
     </div>
   </nav>
-
-
-
+</body>
 
   <main class="container py-4">
     <ol class="breadcrumb">
