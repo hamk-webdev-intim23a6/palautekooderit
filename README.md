@@ -15,7 +15,7 @@ windows, with multiple pythons installed
 debian
 > sudo apt install python3-django python3-django-extensions
 2. Clone the repo
-3. change palautekooderit/palautekooderit/secretKey_template.py to palautekooderit/palautekooderit/secretKey.py and fill it.
+3. change palautekooderit/palautekooderit/untrackedSettings_tempate.py to palautekooderit/palautekooderit/untrackedSettings.py and fill it.
     - If you are one of us, you can grab the key, or the entire file, from the server.
 4. Profit???
 
