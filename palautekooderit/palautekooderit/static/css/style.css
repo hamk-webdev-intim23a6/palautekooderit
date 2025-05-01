@@ -16,10 +16,7 @@ h1 {
     text-shadow: #dfe1ff 2px 2px 0px;
 }
 
-h2,
-h3,
-h4,
-h5 {
+h2, h3, h4, h5 {
     font-weight: 600;
     color: #333;
 }
@@ -123,8 +120,7 @@ h5 {
     margin-bottom: 20px;
 }
 
-.form-control,
-.form-select {
+.form-control, .form-select {
     border-radius: 5px;
     padding: 10px;
     width: 100%;
