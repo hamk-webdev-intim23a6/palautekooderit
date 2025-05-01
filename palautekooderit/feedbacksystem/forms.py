@@ -1,6 +1,9 @@
 # forms.py
 from django import forms
 from .models import Topic, Feedback
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 # The form for submitting feedback
 class FeedbackForm(forms.Form):
@@ -44,3 +47,40 @@ class TopicForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'})
         }
+        
+# This form is used in login 
+class CustomLoginForm(AuthenticationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Käyttäjätunnus'
+        })
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Salasana'
+        })
+    )
+
+#This form is used in signup
+
+class CustomSignupForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2']
+
+    def __init__(self, *args, **kwargs):
+        super(CustomSignupForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({
+            'class': 'form-control custom-width',
+            'placeholder': 'Käyttäjätunnus'
+        })
+        self.fields['password1'].widget.attrs.update({
+            'class': 'form-control custom-width',
+            'placeholder': 'Salasana'
+        })
+        self.fields['password2'].widget.attrs.update({
+            'class': 'form-control custom-width',
+            'placeholder': 'Vahvista salasana'
+        })

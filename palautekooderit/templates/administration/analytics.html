@@ -1,126 +1,122 @@
 {% extends "base.html" %}
+{% block title %}Analytiikka{% endblock %}
 
 {% block content %}
-<h1 class="text-center">Analytiikka</h1>
+<h1 class="text-center mb-4">Analytiikka</h1>
 
 <div class="container">
-    <!-- Table displaying topics with average rating and feedback count -->
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th class="col-4">Aihe</th>
-                        <th class="col-4">Keskiarvo</th>
-                        <th class="col-4">Palauteiden määrä</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in topic_data %}
-                    <tr>
-                        <td class="col-4">{{ item.topic.name }}</td>
-                        <td class="col-4">{{ item.avg_rating|floatformat:1 }}</td>
-                        <td class="col-4">{{ item.feedback_count }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="3">Ei vielä palautteita.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+
+  {# Keskiarvot-taulukko #}
+  <div class="card mb-4">
+    <div class="card-body">
+      <h4 class="card-title">Palauteaiheet</h4>
+      <table class="table table-feedback table-striped mt-3">
+        <thead>
+          <tr>
+            <th>Aihe</th>
+            <th>Keskiarvo</th>
+            <th>Palautteiden määrä</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in topic_data %}
+            <tr>
+              <td>{{ item.topic.name }}</td>
+              <td>{{ item.avg_rating|floatformat:1 }}</td>
+              <td>{{ item.feedback_count }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="3">Ei vielä palautteita.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div>
 
-    <hr>
-
-    <!-- User selection dropdown below the stats table -->
-    <div class="row mb-3">
-        <div class="col-md-12">
-            <form method="GET">
-                <div class="form-group">
-                    <label for="user">Valitse käyttäjä:</label>
-                    <select id="user" name="user" class="form-control" onchange="this.form.submit()">
-                        <option value="">Kaikki käyttäjät</option>
-                        {% for user in user_list %}
-                        <option value="{{ user.id }}" {% if selected_user and selected_user.id == user.id %}selected{% endif %}>{{ user.username }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </form>
-        </div>
+  {# Käyttäjän valinta #}
+<div class="card mb-4 col-md-6 text-center mx-auto">
+    <div class="card-body">
+        <h4 class="card-title">Valitse käyttäjä</h4>
+      <form method="get">
+        <select id="user" name="user" class="form-select" onchange="this.form.submit()">
+          <option value="">Kaikki käyttäjät</option>
+          {% for user in user_list %}
+            <option value="{{ user.id }}" {% if selected_user and selected_user.id == user.id %}selected{% endif %}>
+              {{ user.username }}
+            </option>
+          {% endfor %}
+        </select>
+      </form>
     </div>
+  </div>
 
-    <hr>
+  {# Palautekommentit aiheittain #}
+  {% for item in topic_data %}
+    <div class="card mb-5">
+      <div class="card-body">
+        <h4 class="card-title">{{ item.topic.name }}</h4>
 
-    <!-- Displaying feedback comments for the selected user -->
-    {% for item in topic_data %}
-    <div class="row">
-        <div class="col-md-12">
-            <h2>{{ item.topic.name }}</h2>
+        {% if item.positive_comments %}
+          <h5 class="mt-4">Positiiviset kommentit</h5>
+          <table class="table table-feedback table-feedback-second table-bordered">
+            <thead>
+              <tr>
+                <th>Käyttäjä</th>
+                <th>Kommentti</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for username, comment in item.positive_comments %}
+              <tr>
+                <td>{{ username }}</td>
+                <td>{{ comment }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
 
-            {% if item.positive_comments %}
-            <h4>Positiiviset kommentit</h4>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="col-6">Käyttäjä</th>
-                        <th class="col-6">Kommentti</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for username, comment in item.positive_comments %}
-                    <tr>
-                        <td class="col-6">{{ username }}</td>
-                        <td class="col-6">{{ comment }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% endif %}
+        {% if item.negative_comments %}
+          <h5 class="mt-4">Negatiiviset kommentit</h5>
+          <table class="table table-feedback table-feedback-second table-bordered">
+            <thead>
+              <tr>
+                <th>Käyttäjä</th>
+                <th>Kommentti</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for username, comment in item.negative_comments %}
+              <tr>
+                <td>{{ username }}</td>
+                <td>{{ comment }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
 
-            {% if item.negative_comments %}
-            <h4>Negatiiviset kommentit</h4>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="col-6">Käyttäjä</th>
-                        <th class="col-6">Kommentti</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for username, comment in item.negative_comments %}
-                    <tr>
-                        <td class="col-6">{{ username }}</td>
-                        <td class="col-6">{{ comment }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% endif %}
-
-            {% if item.ideas_comments %}
-            <h4>Ideat</h4>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="col-6">Käyttäjä</th>
-                        <th class="col-6">Idea</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for username, comment in item.ideas_comments %}
-                    <tr>
-                        <td class="col-6">{{ username }}</td>
-                        <td class="col-6">{{ comment }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% endif %}
-
-            <hr>
-        </div>
+        {% if item.ideas_comments %}
+          <h5 class="mt-4">Ideat</h5>
+          <table class="table table-feedback table-feedback-second table-bordered">
+            <thead>
+              <tr>
+                <th>Käyttäjä</th>
+                <th>Idea</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for username, comment in item.ideas_comments %}
+              <tr>
+                <td>{{ username }}</td>
+                <td>{{ comment }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+      </div>
     </div>
-    {% endfor %}
+  {% endfor %}
 </div>
-
 {% endblock %}

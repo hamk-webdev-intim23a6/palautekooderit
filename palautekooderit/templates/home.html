@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
+
 {% block content %}
+<h1 class="mb-3">Ankkapeli</h1>
 
-<h1>Ankkapeli</h1>
-
-{# Display Django messages #}
 {% if messages %}
-<ul class="messages" style="list-style: none; padding: 0; margin-bottom: 15px;">
+<ul class="list-unstyled mb-4">
   {% for message in messages %}
-  {# Basic styling for messages - adjust as needed #}
-  <li{% if message.tags %} class="message {{ message.tags }}" style="padding: 10px; margin-bottom: 10px; border-radius: 4px; color: #fff; background-color: {% if 'error' in message.tags %}#dc3545{% elif 'success' in message.tags %}#28a745{% elif 'warning' in message.tags %}#ffc107{% else %}#007bff{% endif %};"{% endif %}>
+  <li class="alert 
+      {% if 'error' in message.tags %}alert-danger
+      {% elif 'success' in message.tags %}alert-success
+      {% elif 'warning' in message.tags %}alert-warning
+      {% else %}alert-primary{% endif %}">
     {{ message }}
   </li>
   {% endfor %}
@@ -16,67 +18,63 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-  {# This is the default state of the form #}
-  <div id="button-container" {% if form.is_bound and form.errors %}style="display: none;"{% endif %}>
-    <button
-      type="button"
-      onclick="document.getElementById('feedback-form').style.display='block'; document.getElementById('button-container').style.display='none';"
-      style="margin-right: 10px;"
-    >
+  <div id="button-container" class="d-flex justify-content-center align-items-center gap-3 my-4 flex-wrap mt-5 {% if form.is_bound and form.errors %}d-none{% endif %}">
+    <button type="button" class="btn btn-fancy me-2"
+      onclick="document.getElementById('feedback-form').classList.remove('d-none'); document.getElementById('button-container').classList.add('d-none');">
       Anna palautetta
     </button>
-    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+    <form method="post" action="{% url 'logout' %}" class="d-inline">
       {% csrf_token %}
-      <button type="submit">Kirjaudu ulos</button>
+      <button type="submit" class="btn btn-secondary">Kirjaudu ulos</button>
     </form>
   </div>
 
-  {# The form is hidden by default and shown when the button is clicked #}
-  <div id="feedback-form" {% if not form.is_bound or not form.errors %}style="display: none;"{% endif %} style="margin-top: 20px; border: 1px solid #ccc; padding: 15px; border-radius: 5px;">
-    <h3>Anna palautetta</h3>
+  <div id="feedback-form" class="card p-4 mt-4 {% if not form.is_bound or not form.errors %}d-none{% endif %}">
+    <h3 class="mb-3">Anna palautetta</h3>
+
     {% if form.non_field_errors %}
-        <div style="color: red; margin-bottom: 10px; border: 1px solid red; padding: 8px; border-radius: 4px;">
-            {{ form.non_field_errors }}
-        </div>
+    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
     {% endif %}
 
-    {# The actual form submission #}
     <form method="post" action="{% url 'submit_feedback' %}">
       {% csrf_token %}
-      <div>
-        <label for="{{ form.topic.id_for_label }}">{{ form.topic.label }}</label>
+      <div class="mb-3">
+        <label for="{{ form.topic.id_for_label }}" class="form-label">{{ form.topic.label }}</label>
         {{ form.topic }}
       </div>
-      <div>
-        <label for="{{ form.rating.id_for_label }}">{{ form.rating.label }}</label>
+      <div class="mb-3">
+        <label for="{{ form.rating.id_for_label }}" class="form-label">{{ form.rating.label }}</label>
         {{ form.rating }}
       </div>
-      <div>
-        <label for="{{ form.positive.id_for_label }}">{{ form.positive.label }}</label>
+      <div class="mb-3">
+        <label for="{{ form.positive.id_for_label }}" class="form-label">{{ form.positive.label }}</label>
         {{ form.positive }}
       </div>
-      <div>
-        <label for="{{ form.negative.id_for_label }}">{{ form.negative.label }}</label>
+      <div class="mb-3">
+        <label for="{{ form.negative.id_for_label }}" class="form-label">{{ form.negative.label }}</label>
         {{ form.negative }}
       </div>
-      <div>
-        <label for="{{ form.ideas.id_for_label }}">{{ form.ideas.label }}</label>
+      <div class="mb-3">
+        <label for="{{ form.ideas.id_for_label }}" class="form-label">{{ form.ideas.label }}</label>
         {{ form.ideas }}
       </div>
-      <button type="submit" style="margin-right: 10px;">Lähetä palaute</button>
-      <button
-        type="button"
-        onclick="document.getElementById('feedback-form').style.display='none'; document.getElementById('button-container').style.display='block';"
-      >
-        Peruuta
-      </button>
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-success">Lähetä palaute</button>
+        <button type="button" class="btn btn-outline-secondary"
+          onclick="document.getElementById('feedback-form').classList.add('d-none'); document.getElementById('button-container').classList.remove('d-none');">
+          Peruuta
+        </button>
+      </div>
     </form>
   </div>
 
 {# If user is not authenticated #}
 {% else %}
-  <p>Sinun täytyy kirjautua ensin sisään.</p>
-  <p><a href="{% url 'login' %}">Kirjaudu sisään</a></p>
-  <p><a href="{% url 'signup' %}">Luo uusi tili</a></p>
+<div class="card login-card mx-auto mt-5 p-4 text-center" style="max-width: 400px;">
+  <h4 class="mb-3">Kirjaudu sisään jatkaaksesi</h4>
+  <p class="text-muted">Sinun täytyy kirjautua ensin sisään.</p>
+  <a href="{% url 'login' %}" class="btn btn-primary w-100 mb-2">Kirjaudu sisään</a>
+  <a href="{% url 'signup' %}" class="btn btn-outline-secondary w-100">Luo uusi tili</a>
+</div>
 {% endif %}
 {% endblock %}

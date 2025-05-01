@@ -1,52 +1,56 @@
 {% extends 'base.html' %}
+{% block title %}Aiheet{% endblock %}
+
 {% block content %}
+<h1 class="mb-4">Hallinnoi aiheita</h1>
 
-<h1>Hallinnoi aiheita</h1>
-
-{# Display Django messages #}
+{# Viestit #}
 {% if messages %}
-<ul class="messages" style="list-style: none; padding: 0; margin-bottom: 15px;">
   {% for message in messages %}
-  {# Basic styling for messages - adjust as needed #}
-  <li{% if message.tags %} class="message {{ message.tags }}" style="padding: 10px; margin-bottom: 10px; border-radius: 4px; color: #fff; background-color: {% if 'error' in message.tags %}#dc3545{% elif 'success' in message.tags %}#28a745{% elif 'warning' in message.tags %}#ffc107{% else %}#007bff{% endif %};"{% endif %}>
-    {{ message }}
-  </li>
+    <div class="alert 
+        {% if 'error' in message.tags %}alert-danger
+        {% elif 'success' in message.tags %}alert-success
+        {% elif 'warning' in message.tags %}alert-warning
+        {% else %}alert-primary
+        {% endif %}
+        ">
+      {{ message }}
+    </div>
   {% endfor %}
-</ul>
 {% endif %}
 
-{# Section for creating a new topic #}
-<div style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; margin-bottom: 30px;">
-    <h2>Luo uusi palauteaihe</h2>
-    <form method="post" novalidate>
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-            <div style="color: red; margin-bottom: 10px; border: 1px solid red; padding: 8px; border-radius: 4px;">
-                {{ form.non_field_errors }}
-            </div>
-        {% endif %}	
-        <div>
-          <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
-          {{ form.name }}
-        </div>
-        <button type="submit">Luo aihe</button>
-    </form>
-</div>
+{# Uuden aiheen luonti #}
+<div class="card p-4 mb-4">
+  <h2 class="mb-3">Luo uusi palauteaihe</h2>
+  <form method="post" novalidate>
+    {% csrf_token %}
 
-{# Section listing existing topics #}
-<div>
-    <h2>Olemassa olevat aiheet</h2>
-    {% if topics %}
-        <ul style="padding-left: 20px; list-style: disc;">
-            {% for topic in topics %}
-                <li>{{ topic.name }}</li>
-            {% empty %}
-                <li>Ei vielä luotuja aiheita.</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Ei vielä luotuja aiheita.</p>
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">{{ form.non_field_errors }}</div>
     {% endif %}
+
+    <div class="mb-3">
+      <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
+      {{ form.name }}
+    </div>
+
+    <button type="submit" class="btn btn-success">Luo aihe</button>
+  </form>
 </div>
 
+{# Olemassa olevat aiheet #}
+<div class="card p-4">
+  <h2 class="mb-3">Olemassa olevat aiheet</h2>
+  {% if topics %}
+    <ul class="list-group">
+      {% for topic in topics %}
+        <li class="list-group-item">{{ topic.name }}</li>
+      {% empty %}
+        <li class="list-group-item">Ei vielä luotuja aiheita.</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Ei vielä luotuja aiheita.</p>
+  {% endif %}
+</div>
 {% endblock %}
