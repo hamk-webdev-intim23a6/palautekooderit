@@ -23,8 +23,11 @@ h2, h3, h4, h5 {
 
 /* Navigaatio */
 .navbar {
-    background-color: #007bff;
+    background: linear-gradient(135deg, #0b0025, #000a1f);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 0px rgba(17, 17, 17, 0.808);
 }
+
 
 .navbar-brand {
     font-size: 1.5rem;
@@ -49,18 +52,43 @@ h2, h3, h4, h5 {
 
 .analytics-btn {
     background-color: #ffc107;
-    /* Bootstrap warning color */
     color: #212529;
-    /* tumma teksti */
-    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
     transition: background-color 0.5s ease-in-out;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
 }
 
 .analytics-btn:hover {
     background-color: #e0a800;
-    /* tummempi keltainen hover-väri */
     color: #fff;
+    text-decoration: none;
 }
+
+.navbar-toggler {
+    border: solid 2px #007bff;
+    transition: all 0.20s ease;
+    border-radius: 2rem;
+}
+
+.navbar-toggler:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 8px 16px rgba(0, 123, 255, 0.4);
+    color: white;
+}
+
+.navbar-toggler-icon {
+    background-size: 1.01em 1.01em; 
+    transition: all 0.20s ease;
+}
+
+.navbar-toggler-icon:hover {
+    background-size: 1.05em 1.05em;   
+}
+
 
 
 
@@ -332,7 +360,83 @@ div[style*="color: red"] {
 @media (max-width: 768px) {
     .navbar {
         font-size: 1rem;
+        padding: 0.5rem 1rem;
     }
+
+    .navbar-title-text {
+        display: none;
+    }
+
+    .navbar .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+      }
+
+      .navbar-brand {
+        order: 1;
+        text-align: center;
+      }
+
+    .navbar-logo {
+        display: block;
+        height: 40px;
+        margin: 0 auto;
+        box-shadow: #0056b3 0px 0px 20px;
+        border-radius: 5rem;
+        transition: all 0.25s ease;
+    }
+
+    .navbar-logo:hover {
+        transform: translateY(-2px) scale(1.01);
+        box-shadow: 0px 0px 28px rgb(75, 162, 255);
+    }
+
+    .navbar-toggler {
+        background: #00acfc9c;
+        order: 2;
+        align-self: flex-end;
+        margin-top: -50px;
+        z-index: 2;
+      }
+
+    .navbar-toggler:hover {
+        transform: translateY(-1%) scale(1.05);
+    }
+
+    .navbar-collapse {
+        order: 3;
+        width: 100%;
+      }
+
+    .navbar-nav {
+        text-align: center;
+        width: 100%;
+    }
+
+    .navbar-nav .nav-item {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .navbar-nav .nav-item a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-collapse {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.7s ease, transform 0.5s ease;
+    display: none;
+    }
+    
+    .navbar-collapse.show {
+    opacity: 1;
+    transform: translateY(0);
+    }
+    
 
     .card-body {
         padding: 15px;
@@ -341,31 +445,6 @@ div[style*="color: red"] {
     .table th,
     .table td {
         font-size: 0.9rem;
-    }
-
-    /* Keskitetään navigaation linkit mobiilissa */
-    .navbar-nav {
-        text-align: center;
-        /* Keskitetään kaikki linkit mobiilissa */
-        width: 100%;
-    }
-
-    .navbar-nav .nav-item {
-        width: 100%;
-        text-align: center;
-        /* Varmistetaan, että myös linkit keskitetään */
-    }
-
-    .navbar-nav .nav-item a {
-        padding: 10px 0;
-        display: block;
-        width: 100%;
-        /* Asetetaan linkin leveys 100%, jotta ne venyvät koko leveydelle */
-    }
-
-    /* Lisää väliä "Analytiikka" ja "Kirjaudu ulos" linkkien väliin */
-    .navbar-nav .nav-item:first-child {
-        margin-bottom: 10px;
     }
 }
 
