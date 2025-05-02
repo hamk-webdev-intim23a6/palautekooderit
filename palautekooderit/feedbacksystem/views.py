@@ -25,15 +25,20 @@ def submit_feedback(request):
             positive = form.cleaned_data['positive']
             negative = form.cleaned_data['negative']
             ideas = form.cleaned_data['ideas']
+            is_anonymous = form.cleaned_data.get('anonymous', False)
 
-            Feedback.objects.create(
+            feedback = Feedback(
                 topic=topic_instance,
-                user=request.user,
                 rating=rating,
                 positive=positive,
                 negative=negative,
-                ideas=ideas
+                ideas=ideas,
             )
+
+            if not is_anonymous:
+                feedback.user = request.user
+
+            feedback.save()
 
             messages.success(request, 'Kiitos palautteesta!')
 
@@ -111,4 +116,3 @@ def analytics(request):
         'user_list': user_list,
         'selected_user': selected_user,
     })
-    

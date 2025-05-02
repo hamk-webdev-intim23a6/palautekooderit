@@ -85,32 +85,4 @@
   <a href="{% url 'signup' %}" class="btn btn-outline-secondary w-100">Luo uusi tili</a>
 </div>
 {% endif %}
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const anonymousCheckbox = document.getElementById("id_anonymous");
-    const textFields = ["id_positive", "id_negative", "id_ideas"].map(id => document.getElementById(id));
-    const feedbackFields = document.getElementById("feedback-fields");
-
-    function toggleTextFields() {
-      const disabled = anonymousCheckbox.checked;
-      textFields.forEach(field => {
-        field.disabled = disabled;
-        if (disabled) field.value = "";  // Clear the field when disabled
-      });
-
-      // Show or hide feedback fields based on anonymous checkbox
-      if (disabled) {
-        feedbackFields.style.display = "none";  // Hide feedback fields when anonymous
-      } else {
-        feedbackFields.style.display = "block";  // Show feedback fields when not anonymous
-      }
-    }
-
-    if (anonymousCheckbox) {
-      anonymousCheckbox.addEventListener("change", toggleTextFields);
-      toggleTextFields();  // Initial run on load
-    }
-  });
-</script>
 {% endblock %}
