@@ -22,21 +22,27 @@ class FeedbackForm(forms.Form):
         initial=5,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
+    anonymous = forms.BooleanField(
+        required=False,
+        label="Anna palautetta anonyymisti",
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input', 'id': 'id_anonymous'})
+    )
     positive = forms.CharField(
         label="Mikä oli positiivista? (Valinnainen)",
         required=False,
-        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control'})
+        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'id': 'id_positive'})
     )
     negative = forms.CharField(
         label="Mitä voisi parantaa? (Valinnainen)",
         required=False,
-        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control'})
+        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'id': 'id_negative'})
     )
     ideas = forms.CharField(
         label="Muita ideoita? (Valinnainen)",
         required=False,
-        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control'})
+        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'id': 'id_ideas'})
     )
+
 
 # The form for creating a new topic
 class TopicForm(forms.ModelForm):

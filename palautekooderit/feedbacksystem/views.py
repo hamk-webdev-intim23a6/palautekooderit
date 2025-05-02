@@ -25,15 +25,20 @@ def submit_feedback(request):
             positive = form.cleaned_data['positive']
             negative = form.cleaned_data['negative']
             ideas = form.cleaned_data['ideas']
+            is_anonymous = form.cleaned_data.get('anonymous', False)
 
-            Feedback.objects.create(
+            feedback = Feedback(
                 topic=topic_instance,
-                user=request.user,
                 rating=rating,
                 positive=positive,
                 negative=negative,
-                ideas=ideas
+                ideas=ideas,
             )
+
+            if not is_anonymous:
+                feedback.user = request.user
+
+            feedback.save()
 
             messages.success(request, 'Kiitos palautteesta!')
 
@@ -78,11 +83,16 @@ def analytics(request):
     selected_user = None
 
     if selected_user_id:
-        try:
-            selected_user = User.objects.get(id=selected_user_id)
-            feedbacks = Feedback.objects.filter(user=selected_user)
-        except User.DoesNotExist:
-            feedbacks = Feedback.objects.all()
+        if selected_user_id == "None":
+                feedbacks = Feedback.objects.filter(user=None)
+        else:
+            try:
+                selected_user = User.objects.get(id=selected_user_id)
+                if selected_user != None:
+                    selected_user_id = selected_user.id
+                feedbacks = Feedback.objects.filter(user=selected_user)
+            except User.DoesNotExist:
+                feedbacks = Feedback.objects.all()
     else:
         feedbacks = Feedback.objects.all()
 
@@ -109,6 +119,5 @@ def analytics(request):
     return render(request, 'administration/analytics.html', {
         'topic_data': topic_data,
         'user_list': user_list,
-        'selected_user': selected_user,
+        'selected_user_id': selected_user_id,
     })
-    
