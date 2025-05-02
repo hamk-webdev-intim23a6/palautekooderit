@@ -10,8 +10,10 @@ class FeedbackForm(forms.Form):
     topic = forms.ModelChoiceField(
         queryset=Topic.objects.all().order_by('name'),
         label="Aihe",
-        empty_label=None,
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'data-placeholder': 'Valitse aihe'
+        })
     )
     rating = forms.IntegerField(
         min_value=1,
