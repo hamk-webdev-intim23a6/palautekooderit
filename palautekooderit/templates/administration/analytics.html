@@ -41,10 +41,13 @@
         <select id="user" name="user" class="form-select" onchange="this.form.submit()">
           <option value="">Kaikki käyttäjät</option>
           {% for user in user_list %}
-            <option value="{{ user.id }}" {% if selected_user and selected_user.id == user.id %}selected{% endif %}>
+            <option value="{{ user.id }}" {% if selected_user_id == user.id %}selected{% endif %}>
               {{ user.username }}
             </option>
           {% endfor %}
+          <option value="None" {% if selected_user_id == "None" %}selected{% endif %}>
+            Nimetön
+          </option>
         </select>
       </form>
     </div>
