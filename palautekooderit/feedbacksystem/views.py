@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Feedback, Topic
 from .forms import FeedbackForm, TopicForm
 from django.contrib import messages
 from django.db.models import Avg
 from django.contrib.auth.models import User
+from django.shortcuts import render
 
 
 # Home page view - displays the feedback form
@@ -42,8 +43,13 @@ def submit_feedback(request):
             return render(request, 'home.html', {'form': form})
     else:
         return redirect('home')
-
+def user_is_staff(user):
+    if user.is_staff:
+        return True
+    else:
+        return False
 # Allows creation of feedback items (Topics)
+@user_passes_test(user_is_staff, login_url='home')
 def topic(request):
     topics = Topic.objects.all().order_by('name')
     if request.method == 'POST':
@@ -62,6 +68,7 @@ def topic(request):
         'topics': topics
     })
 
+@user_passes_test(user_is_staff, login_url='home')
 def analytics(request):
     topics = Topic.objects.all()
     user_list = User.objects.all()
