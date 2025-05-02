@@ -22,21 +22,33 @@ class FeedbackForm(forms.Form):
         initial=5,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
+    anonymous = forms.BooleanField(
+        required=False,
+        label="Anna palautetta anonyymisti. Huomioithan, että kirjallinen palaute ei ole mahdollista",
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input', 'id': 'id_anonymous'})
+    )
     positive = forms.CharField(
         label="Mikä oli positiivista? (Valinnainen)",
         required=False,
-        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control'})
+        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'id': 'id_positive'})
     )
     negative = forms.CharField(
         label="Mitä voisi parantaa? (Valinnainen)",
         required=False,
-        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control'})
+        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'id': 'id_negative'})
     )
     ideas = forms.CharField(
         label="Muita ideoita? (Valinnainen)",
         required=False,
-        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control'})
+        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'id': 'id_ideas'})
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get("anonymous"):
+            for field in ['positive', 'negative', 'ideas']:
+                if cleaned_data.get(field):
+                    self.add_error(field, "Kirjallinen palaute ei ole mahdollista anonyymisti.")
 
 # The form for creating a new topic
 class TopicForm(forms.ModelForm):

@@ -38,6 +38,12 @@
 
     <form method="post" action="{% url 'submit_feedback' %}">
       {% csrf_token %}
+      <div class="form-check mb-3">
+        {{ form.anonymous }}
+        <label class="form-check-label" for="{{ form.anonymous.id_for_label }}">
+          {{ form.anonymous.label }}
+        </label>
+      </div>
       <div class="mb-3">
         <label for="{{ form.topic.id_for_label }}" class="form-label">{{ form.topic.label }}</label>
         {{ form.topic }}
@@ -46,17 +52,19 @@
         <label for="{{ form.rating.id_for_label }}" class="form-label">{{ form.rating.label }}</label>
         {{ form.rating }}
       </div>
-      <div class="mb-3">
-        <label for="{{ form.positive.id_for_label }}" class="form-label">{{ form.positive.label }}</label>
-        {{ form.positive }}
-      </div>
-      <div class="mb-3">
-        <label for="{{ form.negative.id_for_label }}" class="form-label">{{ form.negative.label }}</label>
-        {{ form.negative }}
-      </div>
-      <div class="mb-3">
-        <label for="{{ form.ideas.id_for_label }}" class="form-label">{{ form.ideas.label }}</label>
-        {{ form.ideas }}
+      <div id="feedback-fields">
+        <div class="mb-3">
+          <label for="{{ form.positive.id_for_label }}" class="form-label">{{ form.positive.label }}</label>
+          {{ form.positive }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.negative.id_for_label }}" class="form-label">{{ form.negative.label }}</label>
+          {{ form.negative }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.ideas.id_for_label }}" class="form-label">{{ form.ideas.label }}</label>
+          {{ form.ideas }}
+        </div>
       </div>
       <div class="d-flex gap-2">
         <button type="submit" class="btn btn-success">Lähetä palaute</button>
@@ -77,4 +85,32 @@
   <a href="{% url 'signup' %}" class="btn btn-outline-secondary w-100">Luo uusi tili</a>
 </div>
 {% endif %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const anonymousCheckbox = document.getElementById("id_anonymous");
+    const textFields = ["id_positive", "id_negative", "id_ideas"].map(id => document.getElementById(id));
+    const feedbackFields = document.getElementById("feedback-fields");
+
+    function toggleTextFields() {
+      const disabled = anonymousCheckbox.checked;
+      textFields.forEach(field => {
+        field.disabled = disabled;
+        if (disabled) field.value = "";  // Clear the field when disabled
+      });
+
+      // Show or hide feedback fields based on anonymous checkbox
+      if (disabled) {
+        feedbackFields.style.display = "none";  // Hide feedback fields when anonymous
+      } else {
+        feedbackFields.style.display = "block";  // Show feedback fields when not anonymous
+      }
+    }
+
+    if (anonymousCheckbox) {
+      anonymousCheckbox.addEventListener("change", toggleTextFields);
+      toggleTextFields();  // Initial run on load
+    }
+  });
+</script>
 {% endblock %}

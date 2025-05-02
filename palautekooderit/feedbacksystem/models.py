@@ -19,5 +19,6 @@ class Feedback(models.Model):
     positive = models.TextField(max_length=2500, blank=True)
     negative = models.TextField(max_length=2500, blank=True)
     ideas = models.TextField(max_length=2500, blank=True)
+    anonymous = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.topic} - {self.rating}"
