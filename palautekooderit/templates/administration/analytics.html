@@ -16,6 +16,7 @@
             <th>Aihe</th>
             <th>Keskiarvo</th>
             <th>Palautteiden määrä</th>
+            <th>Jakauma</th>
           </tr>
         </thead>
         <tbody>
@@ -24,6 +25,15 @@
               <td>{{ item.topic.name }}</td>
               <td>{{ item.avg_rating|floatformat:1 }}</td>
               <td>{{ item.feedback_count }}</td>
+              <td>
+                <div class="chart-container">
+                  {% for rating in item.ratings %}
+                    <div class="bar" style="height: calc( {{ rating }} / {{ item.feedback_count }} * 100% );">
+                      <div class="bar-label">{{ rating }}</div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </td>
             </tr>
           {% empty %}
             <tr><td colspan="3">Ei vielä palautteita.</td></tr>

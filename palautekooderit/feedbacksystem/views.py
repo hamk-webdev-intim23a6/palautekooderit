@@ -113,6 +113,10 @@ def analytics(request):
     for topic in filteredTopics:
         topic_feedbacks = feedbacks.filter(topic=topic)
 
+        ratings = [0,0,0,0,0]
+        for feedback in topic_feedbacks:
+            ratings[feedback.rating-1] += 1
+
         avg_rating = topic_feedbacks.aggregate(Avg('rating'))['rating__avg']
         feedback_count = topic_feedbacks.count()
 
@@ -127,6 +131,7 @@ def analytics(request):
             'positive_comments': positive_comments,
             'negative_comments': negative_comments,
             'ideas_comments': ideas_comments,
+            'ratings': ratings,
         })
 
     return render(request, 'administration/analytics.html', {
