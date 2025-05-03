@@ -25,15 +25,20 @@ def submit_feedback(request):
             positive = form.cleaned_data['positive']
             negative = form.cleaned_data['negative']
             ideas = form.cleaned_data['ideas']
+            is_anonymous = form.cleaned_data.get('anonymous', False)
 
-            Feedback.objects.create(
+            feedback = Feedback(
                 topic=topic_instance,
-                user=request.user,
                 rating=rating,
                 positive=positive,
                 negative=negative,
-                ideas=ideas
+                ideas=ideas,
             )
+
+            if not is_anonymous:
+                feedback.user = request.user
+
+            feedback.save()
 
             messages.success(request, 'Kiitos palautteesta!')
 
@@ -70,7 +75,7 @@ def topic(request):
 
 @user_passes_test(user_is_staff, login_url='home')
 def analytics(request):
-    topics = Topic.objects.all()
+    topic_list = Topic.objects.all()
     user_list = User.objects.all()
 
     # Get selected user from GET parameter
@@ -78,17 +83,39 @@ def analytics(request):
     selected_user = None
 
     if selected_user_id:
-        try:
-            selected_user = User.objects.get(id=selected_user_id)
-            feedbacks = Feedback.objects.filter(user=selected_user)
-        except User.DoesNotExist:
-            feedbacks = Feedback.objects.all()
+        if selected_user_id == "None":
+                feedbacks = Feedback.objects.filter(user=None)
+        else:
+            try:
+                selected_user = User.objects.get(id=selected_user_id)
+                if selected_user != None:
+                    selected_user_id = selected_user.id
+                feedbacks = Feedback.objects.filter(user=selected_user)
+            except User.DoesNotExist:
+                feedbacks = Feedback.objects.all()
     else:
         feedbacks = Feedback.objects.all()
 
+    
+    selected_topic_id = request.GET.get('topic')
+
+    try:
+        selectedTopic = topic_list.filter(id=selected_topic_id).first()
+        if(selectedTopic != None):
+            selected_topic_id = selectedTopic.id
+            filteredTopics = [selectedTopic]
+        else:
+            filteredTopics = topic_list
+    except: # I do not care if the error is unspecific; This ensures good function always. Pythons philosophy can go jump in a well. - Valtari
+        filteredTopics = topic_list
+
     topic_data = []
-    for topic in topics:
+    for topic in filteredTopics:
         topic_feedbacks = feedbacks.filter(topic=topic)
+
+        ratings = [0,0,0,0,0]
+        for feedback in topic_feedbacks:
+            ratings[feedback.rating-1] += 1
 
         avg_rating = topic_feedbacks.aggregate(Avg('rating'))['rating__avg']
         feedback_count = topic_feedbacks.count()
@@ -104,11 +131,13 @@ def analytics(request):
             'positive_comments': positive_comments,
             'negative_comments': negative_comments,
             'ideas_comments': ideas_comments,
+            'ratings': ratings,
         })
 
     return render(request, 'administration/analytics.html', {
         'topic_data': topic_data,
         'user_list': user_list,
-        'selected_user': selected_user,
+        'selected_user_id': selected_user_id,
+        'topic_list': topic_list,
+        'selected_topic_id': selected_topic_id,
     })
-    

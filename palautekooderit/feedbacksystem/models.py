@@ -10,7 +10,7 @@ class Topic(models.Model):
 class Feedback(models.Model):
     # Keys
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     #Data
     datetime = models.DateTimeField(auto_now_add=True)
