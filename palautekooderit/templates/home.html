@@ -9,6 +9,9 @@
 </div>
 
 <h1 class="mb-3">Ankkapeli</h1>
+<div class="backround-image-container">
+  <div class="hometext-container">
+    <h1 class="mb-3 text-center">Ankkapeli</h1>
 
 {% if messages %}
 <ul class="list-unstyled mb-4">
@@ -24,6 +27,7 @@
 </ul>
 {% endif %}
 
+
 {% if user.is_authenticated %}
   <div id="button-container" class="d-flex justify-content-center align-items-center gap-3 my-4 flex-wrap mt-5 {% if form.is_bound and form.errors %}d-none{% endif %}">
     <button type="button" class="btn btn-fancy me-2"
@@ -32,9 +36,10 @@
     </button>
     <form method="post" action="{% url 'logout' %}" class="d-inline">
       {% csrf_token %}
-      <button type="submit" class="btn btn-secondary">Kirjaudu ulos</button>
+      <button type="submit" class="btn btn-secondary me-2">Kirjaudu ulos</button>
     </form>
   </div>
+
 
   <div id="feedback-form" class="card p-4 mt-4 {% if not form.is_bound or not form.errors %}d-none{% endif %}">
     <h3 class="mb-3">Anna palautetta</h3>
@@ -87,6 +92,8 @@
       </div>
     </form>
   </div>
+</div>
+</div>
 
 {# If user is not authenticated #}
 {% else %}

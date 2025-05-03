@@ -44,8 +44,8 @@
       <!-- Logo ja otsikko keskelle -->
       <div class="mx-auto d-flex align-items-center">
         <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-          <img class="navbar-logo me-2" src="{% static 'images/logo.png' %}" alt="Logo" style="height: 40px;">
           <span class="navbar-title-text">Ankkapelin palautejärjestelmä</span>
+          <img class="navbar-logo me-0" src="{% static 'images/logo.png' %}" alt="Logo" style="height: 40px;">
         </a>
       </div>
 
@@ -59,20 +59,32 @@
         <ul class="navbar-nav ms-auto mt-3 mt-md-0">
           {% if user.is_authenticated and user.is_staff %}
             <li class="nav-item text-center">
-              <a class="nav-link analytics-btn fw-bold" href="{% url 'analytics' %}">Analytiikka</a>
+                <a class="nav-link analytics-btn" href="{% url 'analytics' %}">
+                  <img src="{% static 'images/analytics.png' %}" alt="Analytiikka" class="nav-icon">
+                    <span class="nav-text">Analytiikka</span>
+                </a>
             </li>  
             <li class="nav-item text-center">
-              <a class="nav-link analytics-btn fw-bold" href="{% url 'topic' %}">Aihealueet</a>
+                <a class="nav-link analytics-btn" href="{% url 'topic' %}">
+                  <img src="{% static 'images/topics.png' %}" alt="Aihealueet" class="nav-icon">
+                    <span class="nav-text">Aihealueet</span>
+                </a>
             </li>
             {% endif %}
             {% if user.is_authenticated %}
               <li class="nav-item text-center">
-                <a class="nav-link analytics-btn fw-bold" href="{% url 'home' %}">Takaisin</a>
+                  <a class="nav-link analytics-btn" href="{% url 'home' %}">
+                    <img src="{% static 'images/home.png' %}" alt="Koti" class="nav-icon">
+                      <span class="nav-text">Koti</span>
+                  </a>
               </li>
               <li class="nav-item text-center">
-                <form method="post" action="{% url 'logout' %}">
+                <form method="post" action="{% url 'logout' %}" class="logout-form">
                   {% csrf_token %}
-                  <button type="submit" class="nav-link analytics-btn fw-bold">Kirjaudu ulos</button>
+                  <button type="submit" class="nav-link logout-btn-base">
+                    <img src="{% static 'images/signout.png' %}" alt="Kirjaudu ulos" class="nav-icon">
+                    <span class="nav-text">Kirjaudu ulos</span>
+                  </button>
                 </form>
               </li>
           {% endif %}
