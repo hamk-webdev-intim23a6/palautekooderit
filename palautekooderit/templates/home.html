@@ -8,7 +8,6 @@
   <img src="/static/images/pieni-ankka.png">
 </div>
 
-<h1 class="mb-3">Ankkapeli</h1>
 <div class="backround-image-container">
   <div class="hometext-container">
     <h1 class="mb-3 text-center">Ankkapeli</h1>
@@ -38,8 +37,8 @@
       {% csrf_token %}
       <button type="submit" class="btn btn-secondary me-2">Kirjaudu ulos</button>
     </form>
+    <img src="/static/images/spinning-duck.gif" style="width: 60%; margin: 0 20%">
   </div>
-
 
   <div id="feedback-form" class="card p-4 mt-4 {% if not form.is_bound or not form.errors %}d-none{% endif %}">
     <h3 class="mb-3">Anna palautetta</h3>
