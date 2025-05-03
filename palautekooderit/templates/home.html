@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{# Preload images #}
+<div style="display: hidden;">
+  <img src="/static/images/pieni-ankka-valkoinen.png">
+  <img src="/static/images/pieni-ankka.png">
+</div>
+
 <h1 class="mb-3">Ankkapeli</h1>
 
 {% if messages %}
