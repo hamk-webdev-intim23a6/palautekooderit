@@ -6,6 +6,31 @@ body {
     padding: 0;
 }
 
+.backround-image-container {
+    background-image: url('/static/images/backround.png');
+    background-size: cover;          
+    background-position: center;    
+    background-repeat: no-repeat;    
+    height: 900px;                   
+    width: 100%;                     
+    position: relative; 
+    padding: 5px;
+    border-radius: 1em;
+    box-shadow: #8a8a8a 0px 0px 5px;         
+}
+
+.hometext-container{
+    border: solid 1px #dfe1ff;
+    width: 80%;
+    height:auto;
+    margin: auto; 
+    padding: 1px;
+    position:relative;
+    border-radius: 0.5em;
+    background: rgba(225, 232, 255, 0.235);
+    box-shadow: #dfe1ff 0px 0px 5px;
+}
+
 /* Pääotsikko tyylit */
 h1 {
     font-size: 2.5rem;
@@ -26,6 +51,22 @@ h2, h3, h4, h5 {
     background: linear-gradient(135deg, #0b0025, #000a1f);
     padding: 1rem 2rem;
     box-shadow: 0 2px 0px rgba(17, 17, 17, 0.808);
+}
+
+.navbar-nav {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-icon {
+    display: none;
+}
+  
+.nav-text {
+    display: inline;
 }
 
 
@@ -50,12 +91,13 @@ h2, h3, h4, h5 {
     /* tai poista background kokonaan, jolloin btn-warning määrittelee sen */
 }
 
+/* analytics-btn on käytössä muissakin navigointibuttoneissa */
 .analytics-btn {
     background-color: #ffc107;
     color: #212529;
     padding: 0.5rem 1rem;
     border-radius: 0.4rem;
-    transition: background-color 0.5s ease-in-out;
+    transition: background-color 0.1s ease-in-out;
     display: inline-block;
     text-align: center;
     text-decoration: none;
@@ -65,6 +107,25 @@ h2, h3, h4, h5 {
     background-color: #e0a800;
     color: #fff;
     text-decoration: none;
+    box-shadow: #bdbdbd 0px 0px 20px;
+}
+
+.logout-btn-base {
+    background: #949494;
+    color: #000000;
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    transition: background-color 0.1s ease-in-out;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.logout-btn-base:hover {
+    background-color: #585858;
+    color: #ffffff;
+    text-decoration: none;
+    box-shadow: #d8d8ff 0px 0px 20px;
 }
 
 .navbar-toggler {
@@ -89,6 +150,22 @@ h2, h3, h4, h5 {
     background-size: 1.05em 1.05em;   
 }
 
+.navbar-nav .nav-item {
+    margin: 5px 5px;
+    display: inline-block;
+    width: 110px; /* Voit säätää tätä arvoa tarpeen mukaan */
+    font-weight:300;
+  }
+
+.navbar-nav .nav-link,
+.navbar-nav .logout-btn-base {
+  display: block;
+  text-align: center;
+  padding: 8px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 
 
 
@@ -97,6 +174,7 @@ h2, h3, h4, h5 {
 .card {
     border-radius: 8px;
     margin-bottom: 20px;
+    overflow: scroll;
 }
 
 .card-body {
@@ -143,6 +221,30 @@ h2, h3, h4, h5 {
     word-wrap: break-word;
 }
 
+@media (max-width: 767px) {
+    .table-feedback-second th:first-child,
+    .table-feedback-second td:first-child {
+        width: 25%;
+    }
+
+    .table-feedback-second th:last-child,
+    .table-feedback-second td:last-child {
+        width: 75%;
+    }
+}
+
+@media (max-width: 450px) {
+    .table-feedback-second th:first-child,
+    .table-feedback-second td:first-child {
+        width: 30%;
+    }
+
+    .table-feedback-second th:last-child,
+    .table-feedback-second td:last-child {
+        width: 70%;
+    }
+}
+
 /* Lomakkeet */
 .form-group {
     margin-bottom: 20px;
@@ -151,6 +253,7 @@ h2, h3, h4, h5 {
 .form-control, .form-select {
     border-radius: 5px;
     padding: 10px;
+    margin: 10px 0;
     width: 100%;
     font-size: 1rem;
 }
@@ -262,7 +365,7 @@ button:hover {
     border: none;
     padding: 0.8rem 2rem;
     font-weight: bold;
-    border-radius: 0.1rem;
+    border-radius: 0.5rem;
     color: white;
     transition: all 0.25s ease;
     letter-spacing: 0.5px;
@@ -357,6 +460,65 @@ div[style*="color: red"] {
 }
 
 /* Responsiivisuus */
+@media (max-width: 992px) {
+    .navbar .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+  
+    .navbar-nav .nav-item {
+      display: flex;
+      background: #ffc107;
+        border-radius: 0.5em;
+      justify-content: center;
+      align-items: center;
+      width: 60px;
+      height: 60px;
+      padding: 0;
+      margin: 5px 5px;
+      overflow: visible; 
+    }
+  
+    .navbar-nav .nav-link,
+    .navbar-nav .logout-btn-base {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      border: none;
+      background: none;
+    }
+  
+    .navbar-nav .logout-form {
+        background: grey;
+        border-radius: 0.5em;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+    }
+  
+    .nav-icon {
+        display: block !important;   
+        width: 24px;
+        height: 24px;
+        object-fit: contain;           
+        opacity: 1 !important;         
+        visibility: visible !important;
+      }
+  
+    .nav-text {
+      display: none !important;
+    }
+  }
+  
 @media (max-width: 768px) {
     .navbar {
         font-size: 1rem;
@@ -365,6 +527,10 @@ div[style*="color: red"] {
 
     .navbar-title-text {
         display: none;
+    }
+
+    .nav-text {
+        display: block !important;
     }
 
     .navbar .container {
@@ -446,6 +612,8 @@ div[style*="color: red"] {
     .table td {
         font-size: 0.9rem;
     }
+
+
 }
 
 
@@ -482,6 +650,9 @@ footer a:hover {
     text-decoration: underline;
 }
 
+.footer-text {
+    margin: auto;
+}
 /* Rating chart */
     .chart-container {
         display: flex;
